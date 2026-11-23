@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Daniel Trombley · Workflow Automations</title>
-<meta name="description" content="Finance and operations workflows built by Daniel Trombley with Claude and Claude Code.">
+<meta name="description" content="AI workflows for businesses, built by Daniel Trombley with Claude and Claude Code.">
 <meta name="color-scheme" content="light">
 <meta name="robots" content="noindex, nofollow">
 <style>
@@ -63,7 +63,6 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 <p>Demos:</p>
 <ol>
 <li><a href="https://invoice-agent-production-99c20ff1.up.railway.app">Invoice agent</a>: checks emailed invoices against the PO and receipt. Live demo.</li>
-<li><a href="#client-reports">Monthly client reports</a>: three agents build and check each client's marketing report. In production, no public demo.</li>
 <li><a href="https://cash-receipts-production.up.railway.app">Cash receipts matching</a>: applies bank deposits to open invoices. Live demo.</li>
 </ol>
 
@@ -112,57 +111,6 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 <g class="n-step">
 <rect x="102" y="384" width="236" height="46" rx="4"/>
 <text x="220" y="412" text-anchor="middle" class="t1">Bill posts to the ledger</text>
-</g>
-</svg>
-
-
-<h2 id="client-reports">Monthly client reports</h2>
-<p>In production for about 6 months at StoreAssure Digital. It runs on client data, so there's no public demo.</p>
-<p>Three agents build each client's monthly marketing report and check every figure against the source data. I sign off before it goes out.</p>
-<ul>
-<li><b>Results:</b> each report went from about 3 hours to about 10 minutes.</li>
-<li><b>How it works:</b> a data agent pulls the month's numbers, a design agent fills the template, and a review agent checks every printed figure against the source data on its own.</li>
-<li><b>Setup:</b> each client is set up once with instructions and data connections. No model retraining.</li>
-<li><b>Controls:</b> the review agent's check against source data, then my sign-off.</li>
-<li><b>Next:</b> time one report by hand to record a baseline, and track the review agent's catch rate each month.</li>
-</ul>
-<svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Client report flow: a data agent gathers the numbers, a design agent fills the template, a review agent checks every figure against the source data on its own, and a person reviews before the client gets it.">
-<defs><marker id="ah-rep" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
-<g class="n-step">
-<rect x="102" y="4" width="236" height="46" rx="4"/>
-<text x="220" y="32" text-anchor="middle" class="t1">Client&#x27;s data sources</text>
-</g>
-<line x1="220" y1="50" x2="220" y2="78" class="edge" marker-end="url(#ah-rep)"/>
-<text x="228" y="69" text-anchor="start" class="t3">pulls the month</text>
-<g class="n-ai">
-<rect x="102" y="80" width="236" height="46" rx="4"/>
-<text x="220" y="108" text-anchor="middle" class="t1">Data agent</text>
-</g>
-<line x1="220" y1="126" x2="220" y2="154" class="edge" marker-end="url(#ah-rep)"/>
-<text x="228" y="145" text-anchor="start" class="t3">numbers</text>
-<g class="n-ai">
-<rect x="102" y="156" width="236" height="46" rx="4"/>
-<text x="220" y="184" text-anchor="middle" class="t1">Design agent</text>
-</g>
-<line x1="220" y1="202" x2="220" y2="230" class="edge" marker-end="url(#ah-rep)"/>
-<text x="228" y="221" text-anchor="start" class="t3">draft report</text>
-<g class="n-ai">
-<rect x="102" y="232" width="236" height="46" rx="4"/>
-<text x="220" y="260" text-anchor="middle" class="t1">Review agent</text>
-</g>
-<path d="M102,27 H76 V255 H100" fill="none" class="edge" stroke-dasharray="4 3" marker-end="url(#ah-rep)"/>
-<text x="70" y="142" text-anchor="end" class="t3">reads source</text>
-<line x1="220" y1="278" x2="220" y2="306" class="edge" marker-end="url(#ah-rep)"/>
-<text x="228" y="297" text-anchor="start" class="t3">checked report</text>
-<g class="n-person">
-<rect x="102" y="308" width="236" height="46" rx="4"/>
-<text x="220" y="336" text-anchor="middle" class="t1">Person reviews</text>
-</g>
-<line x1="220" y1="354" x2="220" y2="382" class="edge" marker-end="url(#ah-rep)"/>
-<text x="228" y="373" text-anchor="start" class="t3">approved</text>
-<g class="n-step">
-<rect x="102" y="384" width="236" height="46" rx="4"/>
-<text x="220" y="412" text-anchor="middle" class="t1">Report goes to the client</text>
 </g>
 </svg>
 
