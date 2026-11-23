@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Daniel Trombley · Workflow Automations</title>
+<title>Daniel Trombley · AI workflows for businesses</title>
 <meta name="description" content="AI workflows for businesses, built by Daniel Trombley with Claude and Claude Code.">
 <meta name="color-scheme" content="light">
 <meta name="robots" content="noindex, nofollow">
@@ -56,11 +56,10 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 <img class="photo" src="daniel-trombley.png" width="96" height="96" alt="Daniel Trombley">
 <div>
 <h1>Daniel Trombley</h1>
-<p class="small">Workflow Automations Portfolio · <a href="https://www.linkedin.com/in/daniel-trombley">LinkedIn</a></p>
+<p class="small">AI workflows for businesses · <a href="https://www.linkedin.com/in/daniel-trombley">LinkedIn</a></p>
 </div>
 </header>
-<p>On this page you can click to see some demo projects of automations and AI-enhanced workflows that I have made.</p>
-<p>Demos:</p>
+<p>I build AI workflows for businesses. Both demos below are live, run on made-up or published data, and were graded against an answer key.</p>
 <ol>
 <li><a href="https://invoice-agent-production-99c20ff1.up.railway.app">Invoice agent</a>: checks emailed invoices against the PO and receipt. Live demo.</li>
 <li><a href="https://cash-receipts-production.up.railway.app">Cash receipts matching</a>: applies bank deposits to open invoices. Live demo.</li>
@@ -68,7 +67,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 
 <h2 id="invoice-agent">Invoice agent</h2>
 <p><a href="https://invoice-agent-production-99c20ff1.up.railway.app">Open the live demo</a>. Made-up vendors and invoices, no sign-in.</p>
-<p>Checks every emailed invoice against its PO and receipt. A person only sees the ones that are wrong.</p>
+<p>Checks every emailed invoice against its PO and receipt. Clean invoices go to a person&#x27;s approve list, and only the flagged ones need a closer look.</p>
 <ul>
 <li><b>Results:</b> in a full run with Claude on a 43-invoice test set, every field was read correctly, all 16 planted problems were caught, including two phishing emails, and there were 0 false flags. About 2.5 cents and 4 seconds per invoice. 137 automated tests.</li>
 <li><b>How it works:</b> Claude reads each PDF and returns the fields with a confidence score. Code does the math in whole cents, applies the 2% price tolerance, catches duplicates and checks every vendor and PO against the ledger.</li>
@@ -119,7 +118,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 <p><a href="https://cash-receipts-production.up.railway.app">Open the live demo</a>. Published accounting data with made-up messy cases, no sign-in.</p>
 <p>Applies bank deposits to open invoices and builds the journal entry. A clerk works the exceptions and a controller approves the batch.</p>
 <ul>
-<li><b>Results:</b> rules applied 72.7% automatically with 0 wrong, 99.9% was right after review (801 of 802), and the journal entry ties to the answer key to the cent.</li>
+<li><b>Results:</b> October had 129 bank lines, 204 payments and 802 invoice applications (one payment can pay several invoices). The rules applied 583 of the 802 automatically (72.7%) with 0 wrong, 801 of 802 (99.9%) were right after review, and the journal entry ties to the answer key to the cent.</li>
 <li><b>How it works:</b> rules apply the payments they can prove and suggest a match for most of the rest. Claude is asked only about payments the rules can't place, like an unknown payer or two customers with the same name. It looks up open invoices and customers with read-only tools. Code checks every answer, and one that fails goes to exceptions with the reason.</li>
 <li><b>Claude's part:</b> in October, Claude was asked about 3 of 204 payments. It placed one across 6 invoices, all correct. It said it couldn't tell on the other two (two customers with the same name, and a payment with no payer), so they went to a person. About 8 cents a payment. The demo asks Claude live, with a daily spending cap.</li>
 <li><b>Controls:</b> the clerk accepts or edits each suggestion. Claude can't apply, approve or post anything. Clean matches still go into the batch the controller approves.</li>
