@@ -64,17 +64,17 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 <ol>
 <li><a href="https://invoice-agent-production-99c20ff1.up.railway.app">Invoice agent</a>: checks emailed invoices against the PO and receipt. Live demo.</li>
 <li><a href="#client-reports">Monthly client reports</a>: three agents build and check each client's marketing report. In production, no public demo.</li>
-<li><a href="#cash-receipts">Cash receipts matching</a>: applies bank deposits to open invoices. Demo coming soon.</li>
+<li><a href="https://cash-receipts-production.up.railway.app">Cash receipts matching</a>: applies bank deposits to open invoices. Live demo.</li>
 </ol>
 
 <h2 id="invoice-agent">Invoice agent</h2>
 <p><a href="https://invoice-agent-production-99c20ff1.up.railway.app">Open the live demo</a>. Made-up vendors and invoices, no sign-in.</p>
 <p>Checks every emailed invoice against its PO and receipt. A person only sees the ones that are wrong.</p>
 <ul>
-<li><b>Results:</b> in a full run with Claude on a 40-invoice test set, every field was read correctly, all 9 invoices with planted problems were caught, and there were 0 false flags. About 2 cents and 4 seconds per invoice. 100+ automated tests.</li>
+<li><b>Results:</b> in a full run with Claude on a 43-invoice test set, every field was read correctly, all 16 planted problems were caught, including two phishing emails, and there were 0 false flags. About 2.5 cents and 4 seconds per invoice. 137 automated tests.</li>
 <li><b>How it works:</b> Claude reads each PDF and returns the fields with a confidence score. Code does the math in whole cents, applies the 2% price tolerance, catches duplicates and checks every vendor and PO against the ledger.</li>
-<li><b>Exceptions:</b> unsure fields and every flag (price over PO, short shipment, duplicate, changed bank details) go to a queue. A flagged invoice needs a written reason to approve.</li>
-<li><b>Controls:</b> Claude can't approve anything. Every step is logged with its inputs, the model output and its cost.</li>
+<li><b>Exceptions:</b> unsure fields and every flag (price over PO, short shipment, duplicate, changed bank details, a look-alike or forged sender) go to a queue. A flagged invoice needs a written reason to approve.</li>
+<li><b>Controls:</b> Claude can't approve anything. A new vendor needs one person to ask and a different person to approve, with the bank details confirmed by phone. Every step is logged with its inputs, the model output and its cost.</li>
 <li><b>Next:</b> sign-in with roles, a second approver above a set amount, and a weekly accuracy check.</li>
 </ul>
 <svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Invoice flow: Claude reads the PDF, TypeScript code checks the match and sorts it into ready to approve or exceptions, and a reviewer decides before a bill posts.">
@@ -168,16 +168,17 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 
 
 <h2 id="cash-receipts">Cash receipts matching</h2>
-<p>Live demo coming soon.</p>
+<p><a href="https://cash-receipts-production.up.railway.app">Open the live demo</a>. Published accounting data with made-up messy cases, no sign-in.</p>
 <p>Applies bank deposits to open invoices and builds the journal entry. A clerk works the exceptions and a controller approves the batch.</p>
 <ul>
-<li><b>Results:</b> from the rules engine, 72.7% applied automatically with 0 wrong, 99.9% right after review (801 of 802), and the journal entry ties to the answer key to the cent.</li>
-<li><b>How it works:</b> rules apply the payments they can prove. Claude suggests a match for the rest, with its reasoning and a confidence level. If code rejects an answer, the payment goes to exceptions with the reason.</li>
+<li><b>Results:</b> rules applied 72.7% automatically with 0 wrong, 99.9% was right after review (801 of 802), and the journal entry ties to the answer key to the cent.</li>
+<li><b>How it works:</b> rules apply the payments they can prove and suggest a match for most of the rest. Claude is asked only about payments the rules can't place, like an unknown payer or two customers with the same name. It looks up open invoices and customers with read-only tools. Code checks every answer, and one that fails goes to exceptions with the reason.</li>
+<li><b>Claude's part:</b> in October, Claude was asked about 3 of 204 payments. It placed one across 6 invoices, all correct. It said it couldn't tell on the other two (two customers with the same name, and a payment with no payer), so they went to a person. About 8 cents a payment. The demo asks Claude live, with a daily spending cap.</li>
 <li><b>Controls:</b> the clerk accepts or edits each suggestion. Claude can't apply, approve or post anything. Clean matches still go into the batch the controller approves.</li>
-<li><b>Testing:</b> a score page grades each measure against the answer key and lists every miss. 121 automated tests.</li>
+<li><b>Testing:</b> a score page grades each measure against the answer key, split by rules, Claude and person, and lists every miss. 135 automated tests.</li>
 <li><b>Test data:</b> 129 bank lines and 1,127 open invoices from one month of a published accounting dataset, with fees, short pays, payer name variants and missing remittances added.</li>
 </ul>
-<svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Cash receipts flow: TypeScript rules clear clean payments, Claude suggests matches for the rest, a clerk accepts or edits each one, and a controller approves the batch before the journal entry is built.">
+<svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Cash receipts flow: TypeScript rules clear clean payments, Claude suggests matches for the payments the rules can't place, a clerk accepts or edits each one, and a controller approves the batch before the journal entry is built.">
 <defs><marker id="ah-cash" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
 <g class="n-step">
 <rect x="102" y="4" width="236" height="46" rx="4"/>
@@ -190,10 +191,10 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 <text x="220" y="108" text-anchor="middle" class="t1">TypeScript rules match</text>
 </g>
 <line x1="220" y1="126" x2="220" y2="154" class="edge" marker-end="url(#ah-cash)"/>
-<text x="228" y="145" text-anchor="start" class="t3">the rest</text>
+<text x="228" y="145" text-anchor="start" class="t3">can't place</text>
 <g class="n-ai">
 <rect x="102" y="156" width="236" height="46" rx="4"/>
-<text x="220" y="184" text-anchor="middle" class="t1">Claude suggests</text>
+<text x="220" y="184" text-anchor="middle" class="t1">Claude suggests, code checks</text>
 </g>
 <line x1="220" y1="202" x2="220" y2="230" class="edge" marker-end="url(#ah-cash)"/>
 <text x="228" y="221" text-anchor="start" class="t3">suggestion</text>
