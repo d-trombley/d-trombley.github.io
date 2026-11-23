@@ -71,7 +71,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 <p><a href="https://invoice-agent-production-99c20ff1.up.railway.app">Open the live demo</a>. Made-up vendors and invoices, no sign-in.</p>
 <p>Checks every emailed invoice against its PO and receipt. A person only sees the ones that are wrong.</p>
 <ul>
-<li><b>Results:</b> on a 40-invoice test set, caught 9 of 9 planted errors, with 0 false flags. 102 automated tests.</li>
+<li><b>Results:</b> in a full run with Claude on a 40-invoice test set, every field was read correctly, all 9 invoices with planted problems were caught, and there were 0 false flags. About 2 cents and 4 seconds per invoice. 100+ automated tests.</li>
 <li><b>How it works:</b> Claude reads each PDF and returns the fields with a confidence score. Code does the math in whole cents, applies the 2% price tolerance, catches duplicates and checks every vendor and PO against the ledger.</li>
 <li><b>Exceptions:</b> unsure fields and every flag (price over PO, short shipment, duplicate, changed bank details) go to a queue. A flagged invoice needs a written reason to approve.</li>
 <li><b>Controls:</b> Claude can't approve anything. Every step is logged with its inputs, the model output and its cost.</li>
