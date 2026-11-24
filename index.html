@@ -68,15 +68,8 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 
 <h2 id="invoice-agent">Invoice agent</h2>
 <p><a href="https://invoice-agent-production-99c20ff1.up.railway.app">Live demo</a> · made-up vendors and invoices</p>
-<p>Checks each emailed invoice against its PO and receipt. A person sees only the ones that are wrong.</p>
-<ul>
-<li>On 43 test invoices, Claude read every field correctly. All 16 planted problems were caught, including two phishing emails, with 0 false flags. About 2.5 cents and 4 seconds per invoice. 137 automated tests.</li>
-<li>Claude reads each PDF and returns the fields with a confidence score. Code does the math in whole cents, applies a 2% price tolerance, catches duplicates and checks each vendor and PO against the ledger.</li>
-<li>Unsure fields and every flag (price over PO, short shipment, duplicate, changed bank details, a look-alike or forged sender) go to a queue. Approving a flagged invoice takes a written reason.</li>
-<li>Claude can't approve anything. A new vendor needs one person to request it and another to approve it, with bank details confirmed by phone. Each step is logged with its inputs, model output and cost.</li>
-<li>Next: sign-in with roles, a second approver above a set amount, and a weekly accuracy check.</li>
-</ul>
-<svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Invoice flow: Claude reads the PDF, TypeScript code checks the match and sorts it into ready to approve or exceptions, and a reviewer decides before a bill posts.">
+<p>This agent is designed to help an accounting team deal with processing vendor invoices. It scans a connected email inbox and identifies which items have AP invoices. Then it either flags them as needing extra attention, or continues processing until it is review-ready for posting to the ERP. In this example we have a direct API integration into the ERP, but oftentimes in real-world scenarios a CSV upload file is the output.</p>
+<svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Invoice flow: Claude reads the PDF, TypeScript code checks the match and sorts it into ready to approve or exceptions, and a human decides before a bill posts.">
 <defs><marker id="ah-inv" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
 <g class="n-step">
 <rect x="102" y="4" width="236" height="46" rx="4"/>
@@ -104,7 +97,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 <line x1="310" y1="278" x2="260" y2="306" class="edge" marker-end="url(#ah-inv)"/>
 <g class="n-person">
 <rect x="102" y="308" width="236" height="46" rx="4"/>
-<text x="220" y="336" text-anchor="middle" class="t1">Reviewer decides</text>
+<text x="220" y="336" text-anchor="middle" class="t1">Human decides</text>
 </g>
 <line x1="220" y1="354" x2="220" y2="382" class="edge" marker-end="url(#ah-inv)"/>
 <text x="228" y="373" text-anchor="start" class="t3">approved</text>
@@ -117,14 +110,8 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 
 <h2 id="cash-receipts">Cash receipts matching</h2>
 <p><a href="https://cash-receipts-production.up.railway.app">Live demo</a> · 129 bank lines and 1,127 open invoices from one month of a published accounting dataset, with fees, short pays, payer name variants and missing remittances added</p>
-<p>Applies bank deposits to open invoices and builds the journal entry. A clerk works the exceptions and a controller approves the batch.</p>
-<ul>
-<li>Rules applied 72.7% automatically with 0 wrong. After review, 801 of 802 were right (99.9%), and the journal entry ties to the answer key to the cent. A score page grades each measure by rules, Claude and person, and lists every miss. 135 automated tests.</li>
-<li>Rules apply the payments they can prove and suggest a match for most of the rest. Claude gets only the ones they can't place, like an unknown payer or two customers with the same name, and looks up open invoices and customers with read-only tools. Code checks every answer. One that fails goes to exceptions with the reason.</li>
-<li>In October, Claude got 3 of 204 payments. It placed one across 6 invoices, all correct. On the other two (two customers with the same name, and a payment with no payer) it said it couldn't tell, so they went to a person. About 8 cents a payment. The demo calls Claude live, with a daily spending cap.</li>
-<li>The clerk accepts or edits each suggestion. Claude can't apply, approve or post anything.</li>
-</ul>
-<svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Cash receipts flow: TypeScript rules clear clean payments, Claude suggests matches for the payments the rules can't place, a clerk accepts or edits each one, and a controller approves the batch before the journal entry is built.">
+<p>This workflow is designed to help an AR team apply customer payments. It takes the bank deposits and matches each one to the open invoices it pays. Payments that match are applied automatically, and the rest go to a human with a suggested match to accept or edit. Once everything is applied, a human approves the batch and it builds the journal entry for the ERP.</p>
+<svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Cash receipts flow: TypeScript rules apply the payments that match, Claude suggests matches for the payments the rules can't place, a human accepts or edits each one, and a human approves the batch before the journal entry is built.">
 <defs><marker id="ah-cash" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
 <g class="n-step">
 <rect x="102" y="4" width="236" height="46" rx="4"/>
@@ -146,7 +133,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 <text x="228" y="221" text-anchor="start" class="t3">suggestion</text>
 <g class="n-person">
 <rect x="102" y="232" width="236" height="46" rx="4"/>
-<text x="220" y="260" text-anchor="middle" class="t1">Clerk accepts or edits</text>
+<text x="220" y="260" text-anchor="middle" class="t1">Human accepts or edits</text>
 </g>
 <path d="M338,103 H364 V331 H340" fill="none" class="edge" stroke-dasharray="4 3" marker-end="url(#ah-cash)"/>
 <text x="370" y="217" text-anchor="start" class="t3">cleared</text>
@@ -154,7 +141,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 <text x="228" y="297" text-anchor="start" class="t3">applied</text>
 <g class="n-person">
 <rect x="102" y="308" width="236" height="46" rx="4"/>
-<text x="220" y="336" text-anchor="middle" class="t1">Controller approves</text>
+<text x="220" y="336" text-anchor="middle" class="t1">Human approves</text>
 </g>
 <line x1="220" y1="354" x2="220" y2="382" class="edge" marker-end="url(#ah-cash)"/>
 <text x="228" y="373" text-anchor="start" class="t3">approved</text>
@@ -167,15 +154,8 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 
 <h2 id="collections">Collections worklist</h2>
 <p><a href="https://collections-production-9ee4daa5.up.railway.app">Live demo</a> · made-up customers and emails</p>
-<p>Builds an AR collector's worklist from the aging report. It reads each customer's email history first, so nobody chases a disputed invoice, a check in the mail or a customer in bankruptcy.</p>
-<ul>
-<li>On a 30-customer test ledger with 16 planted problems and 2 traps, it picked the right next step for all 24 past-due customers, caught all 16 problems and sent 0 emails that should have been held. From the files alone, without the emails, it got 18 of 24 and would have sent 5 unsafe emails, one a final notice to the customer in bankruptcy. About 2 cents and 5 seconds per customer. 85 automated tests.</li>
-<li>Code works out aging and stage, and reads payment plans, pending credit memos, unapplied cash and the reminder log. Claude reads the email thread and returns what it found (a dispute, a promise to pay, a bounce, a new contact, a legal notice), each with a word-for-word quote, plus a draft. Code checks every quote against the email and every invoice and amount in the draft against the ledger, then picks the next step from fixed rules.</li>
-<li>Claude decides nothing. A person approves every send. Final notices and contact changes also need the Credit Manager, who can't approve their own work (the demo lets you switch roles). Payment instructions are fixed text Claude never writes. An email that tries to instruct the reviewer is flagged and can't talk it out of collecting. If a history is too long to read in full, nothing is sent. Every step is logged and can be undone.</li>
-<li>Try it: add a customer reply (a dispute, a promise, a trick) and watch the next step change.</li>
-<li>Next: read attachments like remittance PDFs, connect a real mailbox, and make the stage thresholds editable.</li>
-</ul>
-<svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Collections flow: TypeScript reads the aging report and files, Claude reads the email history and quotes what it found, code checks the quotes and picks the next step, a collector sends or holds, and the Credit Manager approves final notices.">
+<p>This agent is designed to help an AR team work through past-due accounts. It starts from the aging report and reads each customer's email history before deciding what to do next, so it doesn't chase a customer who has disputed the invoice, already mailed a check, or is experiencing financial hardship. For each customer it either drafts the right reminder or holds the account for a person to look at. A person checks each email before it goes out, and final notices also need sign-off from a second person. In this example the customers and emails are made up, but in a real setup it would connect to the team's AR inbox and other data sources.</p>
+<svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Collections flow: TypeScript reads the aging report and files, Claude reads the email history and quotes what it found, code checks the quotes and picks the next step, a human sends or holds, and a second human approves final notices.">
 <defs><marker id="ah-coll" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
 <g class="n-step">
 <rect x="102" y="4" width="236" height="46" rx="4"/>
@@ -197,13 +177,13 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 <text x="228" y="221" text-anchor="start" class="t3">draft or hold</text>
 <g class="n-person">
 <rect x="102" y="232" width="236" height="46" rx="4"/>
-<text x="220" y="260" text-anchor="middle" class="t1">Collector sends or holds</text>
+<text x="220" y="260" text-anchor="middle" class="t1">Human sends or holds</text>
 </g>
 <line x1="220" y1="278" x2="220" y2="306" class="edge" marker-end="url(#ah-coll)"/>
 <text x="228" y="297" text-anchor="start" class="t3">final notice</text>
 <g class="n-person">
 <rect x="102" y="308" width="236" height="46" rx="4"/>
-<text x="220" y="336" text-anchor="middle" class="t1">Credit Manager approves</text>
+<text x="220" y="336" text-anchor="middle" class="t1">Second human approves</text>
 </g>
 <line x1="220" y1="354" x2="220" y2="382" class="edge" marker-end="url(#ah-coll)"/>
 <text x="228" y="373" text-anchor="start" class="t3">sent</text>
