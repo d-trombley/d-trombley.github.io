@@ -60,15 +60,15 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 </div>
 </header>
 <div id="ask-daniel"></div>
-<p>Finance workflows I built with Claude and Claude Code. Each demo is live, runs on test data and needs no sign-in.</p>
+<p>Below you will find some AI-assisted workflows I have built.</p>
 <ol>
 <li><a href="https://invoice-agent-production-99c20ff1.up.railway.app">Invoice agent</a>: checks emailed invoices against the PO and receipt.</li>
 <li><a href="https://cash-receipts-production.up.railway.app">Cash receipts matching</a>: applies bank deposits to open invoices.</li>
-<li><a href="https://collections-production-9ee4daa5.up.railway.app">Collections worklist</a>: reads each past-due customer's email before anyone chases them.</li>
+<li><a href="https://collections-production-9ee4daa5.up.railway.app">Collections worklist</a>: reads each past-due customer's email.</li>
 </ol>
 
 <h2 id="invoice-agent">Invoice agent</h2>
-<p><a href="https://invoice-agent-production-99c20ff1.up.railway.app">Live demo</a> · made-up vendors and invoices</p>
+<p><a href="https://invoice-agent-production-99c20ff1.up.railway.app">Live demo</a></p>
 <p>This agent is designed to help an accounting team deal with processing vendor invoices. It scans a connected email inbox and identifies which items have AP invoices. Then it either flags them as needing extra attention, or continues processing until it is review-ready for posting to the ERP. In this example we have a direct API integration into the ERP, but oftentimes in real-world scenarios a CSV upload file is the output.</p>
 <svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Invoice flow: Claude reads the PDF, TypeScript code checks the match and sorts it into ready to approve or exceptions, and a human decides before a bill posts.">
 <defs><marker id="ah-inv" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
@@ -110,7 +110,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 
 
 <h2 id="cash-receipts">Cash receipts matching</h2>
-<p><a href="https://cash-receipts-production.up.railway.app">Live demo</a> · 129 bank lines and 1,127 open invoices from one month of a published accounting dataset, with fees, short pays, payer name variants and missing remittances added</p>
+<p><a href="https://cash-receipts-production.up.railway.app">Live demo</a></p>
 <p>This workflow is designed to help an AR team apply customer payments. It takes the bank deposits and matches each one to the open invoices it pays. Payments that match are applied automatically, and the rest go to a human with a suggested match to accept or edit. Once everything is applied, a human approves the batch and it builds the journal entry for the ERP.</p>
 <svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Cash receipts flow: TypeScript rules apply the payments that match, Claude suggests matches for the payments the rules can't place, a human accepts or edits each one, and a human approves the batch before the journal entry is built.">
 <defs><marker id="ah-cash" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
@@ -154,7 +154,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 
 
 <h2 id="collections">Collections worklist</h2>
-<p><a href="https://collections-production-9ee4daa5.up.railway.app">Live demo</a> · made-up customers and emails</p>
+<p><a href="https://collections-production-9ee4daa5.up.railway.app">Live demo</a></p>
 <p>This agent is designed to help an AR team work through past-due accounts. It starts from the aging report and reads each customer's email history before deciding what to do next, so it doesn't chase a customer who has disputed the invoice, already mailed a check, or is experiencing financial hardship. For each customer it either drafts the right reminder or holds the account for a person to look at. A person checks each email before it goes out, and final notices also need sign-off from a second person. In this example the customers and emails are made up, but in a real setup it would connect to the team's AR inbox and other data sources.</p>
 <svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Collections flow: TypeScript reads the aging report and files, Claude reads the email history and quotes what it found, code checks the quotes and picks the next step, a human sends or holds, and a second human approves final notices.">
 <defs><marker id="ah-coll" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
