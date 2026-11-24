@@ -117,14 +117,14 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 
 <h2 id="cash-receipts">Cash receipts matching</h2>
 <p><a href="https://cash-receipts-production.up.railway.app">Live demo</a> · 129 bank lines and 1,127 open invoices from one month of a published accounting dataset, with fees, short pays, payer name variants and missing remittances added</p>
-<p>This workflow is designed to help an AR team apply customer payments. It takes the bank deposits and matches each one to the open invoices it pays. Payments that match cleanly are applied automatically, and the rest go to a clerk with a suggested match to accept or edit. Once everything is applied, a controller approves the batch and it builds the journal entry for the ERP. In this example the bank lines are imported from a file, and in real-world scenarios that file usually comes from the bank's daily lockbox or deposit report.</p>
+<p>This workflow is designed to help an AR team apply customer payments. It takes the bank deposits and matches each one to the open invoices it pays. Payments that match are applied automatically, and the rest go to a clerk with a suggested match to accept or edit. Once everything is applied, a controller approves the batch and it builds the journal entry for the ERP. In this example the bank lines are imported from a file, and in real-world scenarios that file usually comes from the bank's daily lockbox or deposit report.</p>
 <ul>
 <li>Rules applied 72.7% automatically with 0 wrong. After review, 801 of 802 were right (99.9%), and the journal entry ties to the answer key to the cent. A score page grades each measure by rules, Claude and person, and lists every miss. 135 automated tests.</li>
 <li>Rules apply the payments they can prove and suggest a match for most of the rest. Claude gets only the ones they can't place, like an unknown payer or two customers with the same name, and looks up open invoices and customers with read-only tools. Code checks every answer. One that fails goes to exceptions with the reason.</li>
 <li>In October, Claude got 3 of 204 payments. It placed one across 6 invoices, all correct. On the other two (two customers with the same name, and a payment with no payer) it said it couldn't tell, so they went to a person. About 8 cents a payment. The demo calls Claude live, with a daily spending cap.</li>
 <li>The clerk accepts or edits each suggestion. Claude can't apply, approve or post anything.</li>
 </ul>
-<svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Cash receipts flow: TypeScript rules clear clean payments, Claude suggests matches for the payments the rules can't place, a clerk accepts or edits each one, and a controller approves the batch before the journal entry is built.">
+<svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Cash receipts flow: TypeScript rules apply the payments that match, Claude suggests matches for the payments the rules can't place, a clerk accepts or edits each one, and a controller approves the batch before the journal entry is built.">
 <defs><marker id="ah-cash" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
 <g class="n-step">
 <rect x="102" y="4" width="236" height="46" rx="4"/>
