@@ -65,6 +65,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 <li><a href="https://invoice-agent-production-99c20ff1.up.railway.app">Invoice agent</a>: checks emailed invoices against the PO and receipt. Live demo.</li>
 <li><a href="#client-reports">Monthly client reports</a>: three agents build and check each client's marketing report. In production, no public demo.</li>
 <li><a href="https://cash-receipts-production.up.railway.app">Cash receipts matching</a>: applies bank deposits to open invoices. Live demo.</li>
+<li><a href="https://collections-production-9ee4daa5.up.railway.app">Collections worklist</a>: reads each past-due customer's email before anyone chases them. Live demo.</li>
 </ol>
 
 <h2 id="invoice-agent">Invoice agent</h2>
@@ -218,6 +219,54 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 16px; }
 </g>
 </svg>
 
+
+<h2 id="collections">Collections worklist</h2>
+<p><a href="https://collections-production-9ee4daa5.up.railway.app">Open the live demo</a>. Made-up customers and emails, no sign-in.</p>
+<p>Works the aging report for an AR collector: who to chase, how hard, and what to write. It reads each customer's email history first, so nobody chases a disputed invoice, a check in the mail or a customer in bankruptcy.</p>
+<ul>
+<li><b>Results:</b> on a 30-customer test ledger with 16 planted problems and 2 traps, it picked the right next step for all 24 past-due customers, caught all 16 problems and sent 0 emails that should have been held. From the files alone it got 18 of 24 and would have sent 5 unsafe emails, including a final notice to the customer in bankruptcy. About 2 cents and 5 seconds per customer. 85 automated tests.</li>
+<li><b>How it works:</b> code works out the aging and the stage and reads the payment plans, pending credit memos, unapplied cash and the reminder log. Claude reads the email thread and returns what it found (a dispute, a promise to pay, a bounce, a new contact, a legal notice), each with a word-for-word quote, plus a draft. Code checks every quote against the email and every invoice and amount in the draft against the ledger, then picks the next step from a fixed set of rules.</li>
+<li><b>Controls:</b> Claude decides nothing. A person approves every send, and final notices and contact changes need the Credit Manager, who can't write or approve their own work (in the demo you switch between the two roles). Payment instructions are fixed text Claude never writes. An email that tries to give the reviewer instructions is flagged and can't talk it out of collecting, and a history too long to read in full can't be sent on. Every step is logged with undo.</li>
+<li><b>Try it:</b> add a reply as the customer (a dispute, a promise, a trick) and watch the next step change.</li>
+<li><b>Next:</b> read attachments like remittance PDFs, connect to a real mailbox, and make the stage thresholds settings.</li>
+</ul>
+<svg class="flow" viewBox="0 0 440 434" role="img" aria-label="Collections flow: TypeScript reads the aging report and files, Claude reads the email history and quotes what it found, code checks the quotes and picks the next step, a collector sends or holds, and the Credit Manager approves final notices.">
+<defs><marker id="ah-coll" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
+<g class="n-step">
+<rect x="102" y="4" width="236" height="46" rx="4"/>
+<text x="220" y="32" text-anchor="middle" class="t1">Aging report + files</text>
+</g>
+<line x1="220" y1="50" x2="220" y2="78" class="edge" marker-end="url(#ah-coll)"/>
+<text x="228" y="69" text-anchor="start" class="t3">past due</text>
+<g class="n-ai">
+<rect x="102" y="80" width="236" height="46" rx="4"/>
+<text x="220" y="108" text-anchor="middle" class="t1">Claude reads the emails</text>
+</g>
+<line x1="220" y1="126" x2="220" y2="154" class="edge" marker-end="url(#ah-coll)"/>
+<text x="228" y="145" text-anchor="start" class="t3">quoted findings</text>
+<g class="n-step">
+<rect x="102" y="156" width="236" height="46" rx="4"/>
+<text x="220" y="184" text-anchor="middle" class="t1">Code checks, picks next step</text>
+</g>
+<line x1="220" y1="202" x2="220" y2="230" class="edge" marker-end="url(#ah-coll)"/>
+<text x="228" y="221" text-anchor="start" class="t3">draft or hold</text>
+<g class="n-person">
+<rect x="102" y="232" width="236" height="46" rx="4"/>
+<text x="220" y="260" text-anchor="middle" class="t1">Collector sends or holds</text>
+</g>
+<line x1="220" y1="278" x2="220" y2="306" class="edge" marker-end="url(#ah-coll)"/>
+<text x="228" y="297" text-anchor="start" class="t3">final notice</text>
+<g class="n-person">
+<rect x="102" y="308" width="236" height="46" rx="4"/>
+<text x="220" y="336" text-anchor="middle" class="t1">Credit Manager approves</text>
+</g>
+<line x1="220" y1="354" x2="220" y2="382" class="edge" marker-end="url(#ah-coll)"/>
+<text x="228" y="373" text-anchor="start" class="t3">sent</text>
+<g class="n-step">
+<rect x="102" y="384" width="236" height="46" rx="4"/>
+<text x="220" y="412" text-anchor="middle" class="t1">Outbox + audit trail</text>
+</g>
+</svg>
 
 <hr>
 <p class="small">Daniel Trombley · <a href="https://www.linkedin.com/in/daniel-trombley">LinkedIn</a></p>
